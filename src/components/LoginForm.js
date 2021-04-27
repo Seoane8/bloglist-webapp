@@ -30,7 +30,7 @@ const LoginForm = ({ addUser }) => {
         </div>
         <div>
           <input
-            type='text'
+            type='password'
             value={password}
             name='password'
             placeholder='password'
