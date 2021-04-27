@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import userService from '../services/users'
 
 const LoginForm = ({ addUser, showNotification }) => {

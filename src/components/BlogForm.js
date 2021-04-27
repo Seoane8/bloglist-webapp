@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
+import { useState, useRef } from 'react'
 import blogService from '../services/blogs'
+import Togglable from './Togglable'
 
 const BlogForm = ({ addBlog, showNotification }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
+  const togglableRef = useRef()
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -15,6 +17,7 @@ const BlogForm = ({ addBlog, showNotification }) => {
       setTitle('')
       setAuthor('')
       setUrl('')
+      togglableRef.current.toggleVisibility()
       addBlog(blog)
     } catch ({ response }) {
       showNotification(response.data.error, true)
@@ -22,9 +25,13 @@ const BlogForm = ({ addBlog, showNotification }) => {
   }
 
   return (
-    <div>
+    <Togglable
+      showLabel='Create new blog'
+      hideLabel='Cancel'
+      ref={togglableRef}
+    >
       <h3>Create new blog</h3>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} id='createBlogForm'>
         <div>
           <input
             type='text'
@@ -52,11 +59,11 @@ const BlogForm = ({ addBlog, showNotification }) => {
             onChange={({ target }) => setUrl(target.value)}
           />
         </div>
-        <button>
-          Add blog
-        </button>
       </form>
-    </div>
+      <button type='submit' form='createBlogForm'>
+        Add blog
+      </button>
+    </Togglable>
   )
 }
 
