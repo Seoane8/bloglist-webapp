@@ -56,6 +56,11 @@ const App = () => {
     ))
   }
 
+  const deleteBlog = id => {
+    setBlogs(prevBlogs => prevBlogs.filter(blog => blog.id !== id))
+    showNotification('Blog removed')
+  }
+
   const handleLogout = () => {
     setUser(null)
     window.localStorage.removeItem('loggedBloglistAppUser')
@@ -80,6 +85,8 @@ const App = () => {
                 blogs={blogs}
                 addLike={addLike}
                 showNotification={showNotification}
+                username={user.username}
+                deleteBlog={deleteBlog}
               />
             </>
             )

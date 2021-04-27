@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import blogService from '../services/blogs'
 
-const Blog = ({ blog, addLike, showNotification }) => {
+const Blog = ({ blog, addLike, showNotification, username, deleteBlog }) => {
   const [showAll, setShowAll] = useState(false)
 
   const changeShowAll = () => {
@@ -20,20 +20,40 @@ const Blog = ({ blog, addLike, showNotification }) => {
     }
   }
 
+  const handleDelete = async () => {
+    const confirmMsg = `remove ${blog.title} by ${blog.author}`
+    if (!window.confirm(confirmMsg)) return null
+
+    try {
+      blogService.remove(blog.id)
+
+      deleteBlog(blog.id)
+    } catch ({ response }) {
+      showNotification(response.data.error, true)
+    }
+  }
+
+  const canBeDeleted = blog.user.username === username
+
   return (
     <div>
-      <spam><b>{blog.title}</b> by {blog.author}</spam>
+      <span><b>{blog.title}</b> by {blog.author}</span>
       <button onClick={changeShowAll}>{buttonLabel}</button>
+      {
+        canBeDeleted
+          ? <button onClick={handleDelete}>delete</button>
+          : null
+      }
       <br />
       {
         showAll
           ? (
             <>
-              <spam>{blog.url}</spam>
+              <span>{blog.url}</span>
               <br />
-              <spam>Added by: {blog.user.name}</spam>
+              <span>Added by: {blog.user.name}</span>
               <div>
-                <spam>Likes: {blog.likes}</spam>
+                <span>Likes: {blog.likes}</span>
                 <button onClick={handleLike}>like</button>
               </div>
             </>
