@@ -48,12 +48,18 @@ const App = () => {
     showNotification('Blog created succesfuly')
   }
 
+  const addLike = updatedBlog => {
+    setBlogs(prevBlogs => prevBlogs.map(
+      blog => blog.id === updatedBlog.id
+        ? updatedBlog
+        : blog
+    ))
+  }
+
   const handleLogout = () => {
     setUser(null)
     window.localStorage.removeItem('loggedBloglistAppUser')
   }
-
-  // if (user === null) return <LoginForm addUser={addUser} showNotification={showNotification} />
 
   return (
     <div>
@@ -70,7 +76,11 @@ const App = () => {
                 addBlog={addBlog}
                 showNotification={showNotification}
               />
-              <BlogsList blogs={blogs} />
+              <BlogsList
+                blogs={blogs}
+                addLike={addLike}
+                showNotification={showNotification}
+              />
             </>
             )
           : <LoginForm

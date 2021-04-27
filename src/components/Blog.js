@@ -1,6 +1,7 @@
 import { useState } from 'react'
+import blogService from '../services/blogs'
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, addLike, showNotification }) => {
   const [showAll, setShowAll] = useState(false)
 
   const changeShowAll = () => {
@@ -8,6 +9,16 @@ const Blog = ({ blog }) => {
   }
 
   const buttonLabel = showAll ? 'hide' : 'view'
+
+  const handleLike = async () => {
+    try {
+      const updatedBlog = await blogService.update({ id: blog.id, likes: blog.likes + 1 })
+
+      addLike(updatedBlog)
+    } catch ({ response }) {
+      showNotification(response.data.error, true)
+    }
+  }
 
   return (
     <div>
@@ -23,7 +34,7 @@ const Blog = ({ blog }) => {
               <spam>Added by: {blog.user.name}</spam>
               <div>
                 <spam>Likes: {blog.likes}</spam>
-                <button>like</button>
+                <button onClick={handleLike}>like</button>
               </div>
             </>
             )
