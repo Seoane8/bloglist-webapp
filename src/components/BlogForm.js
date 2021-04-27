@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react'
+import PropTypes from 'prop-types'
 import blogService from '../services/blogs'
 import Togglable from './Togglable'
 
@@ -65,6 +66,11 @@ const BlogForm = ({ addBlog, showNotification }) => {
       </button>
     </Togglable>
   )
+}
+
+BlogForm.propTypes = {
+  addBlog: PropTypes.func.isRequired,
+  showNotification: PropTypes.func.isRequired
 }
 
 export default BlogForm

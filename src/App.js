@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import BlogsList from './components/BlogsList'
+import BlogsList from './components/BlogList'
 import blogService from './services/blogs'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
