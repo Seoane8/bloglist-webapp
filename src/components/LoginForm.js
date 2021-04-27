@@ -1,18 +1,22 @@
 import React, { useState } from 'react'
 import userService from '../services/users'
 
-const LoginForm = ({ addUser }) => {
+const LoginForm = ({ addUser, showNotification }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
   const handleSubmit = async (event) => {
     event.preventDefault()
 
-    const user = await userService.login({ username, password })
+    try {
+      const user = await userService.login({ username, password })
 
-    setUsername('')
-    setPassword('')
-    addUser(user)
+      setUsername('')
+      setPassword('')
+      addUser(user)
+    } catch ({ response }) {
+      showNotification(response.data.error, true)
+    }
   }
 
   return (

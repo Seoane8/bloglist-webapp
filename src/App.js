@@ -7,6 +7,7 @@ import BlogForm from './components/BlogForm'
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
+  const [notification, setNotification] = useState({ msg: null, error: false })
 
   useEffect(async () => {
     const newBlogs = await blogService.getAll()
@@ -37,8 +38,14 @@ const App = () => {
     setUser(newUser)
   }
 
+  const showNotification = (msg, error = false) => {
+    setNotification({ msg, error })
+    setTimeout(() => setNotification({ msg: null, error: false }), 5000)
+  }
+
   const addBlog = newBlog => {
     setBlogs(prevBlogs => [...prevBlogs, newBlog])
+    showNotification('Blog created succesfuly')
   }
 
   const handleLogout = () => {
@@ -46,14 +53,32 @@ const App = () => {
     window.localStorage.removeItem('loggedBloglistAppUser')
   }
 
-  if (user === null) return <LoginForm addUser={addUser} />
+  // if (user === null) return <LoginForm addUser={addUser} showNotification={showNotification} />
 
   return (
     <div>
-      <span>Logged by {user.username}</span>
-      <button onClick={handleLogout}>logout</button>
-      <BlogForm addBlog={addBlog} />
-      <BlogsList blogs={blogs} />
+      {
+        notification.msg || <p>{notification.msg}</p>
+      }
+      {
+        user
+          ? (
+            <>
+              <span>Logged by {user.username}</span>
+              <button onClick={handleLogout}>logout</button>
+              <BlogForm
+                addBlog={addBlog}
+                showNotification={showNotification}
+              />
+              <BlogsList blogs={blogs} />
+            </>
+            )
+          : <LoginForm
+              addUser={addUser}
+              showNotification={showNotification}
+            />
+      }
+
     </div>
   )
 }
