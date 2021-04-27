@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import Blog from './Blog'
 
-const BlogList = ({ blogs, addLike, showNotification, username, deleteBlog }) => {
+const BlogList = ({ blogs, addLike, username, deleteBlog }) => {
   return (
     <div>
       <h2>blogs</h2>
@@ -12,7 +12,6 @@ const BlogList = ({ blogs, addLike, showNotification, username, deleteBlog }) =>
             key={blog.id}
             blog={blog}
             addLike={addLike}
-            showNotification={showNotification}
             username={username}
             deleteBlog={deleteBlog}
           />
@@ -24,7 +23,6 @@ const BlogList = ({ blogs, addLike, showNotification, username, deleteBlog }) =>
 BlogList.propTypes = {
   blogs: PropTypes.arrayOf(PropTypes.object).isRequired,
   addLike: PropTypes.func.isRequired,
-  showNotification: PropTypes.func.isRequired,
   username: PropTypes.string,
   deleteBlog: PropTypes.func.isRequired
 }

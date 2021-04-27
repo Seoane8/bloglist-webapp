@@ -1,28 +1,22 @@
 import { useState, useRef } from 'react'
 import PropTypes from 'prop-types'
-import blogService from '../services/blogs'
 import Togglable from './Togglable'
 
-const BlogForm = ({ addBlog, showNotification }) => {
+const BlogForm = ({ addBlog }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
   const togglableRef = useRef()
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault()
 
-    try {
-      const blog = await blogService.create({ title, author, url })
+    addBlog({ title, author, url })
 
-      setTitle('')
-      setAuthor('')
-      setUrl('')
-      togglableRef.current.toggleVisibility()
-      addBlog(blog)
-    } catch ({ response }) {
-      showNotification(response.data.error, true)
-    }
+    setTitle('')
+    setAuthor('')
+    setUrl('')
+    togglableRef.current.toggleVisibility()
   }
 
   return (
@@ -69,8 +63,7 @@ const BlogForm = ({ addBlog, showNotification }) => {
 }
 
 BlogForm.propTypes = {
-  addBlog: PropTypes.func.isRequired,
-  showNotification: PropTypes.func.isRequired
+  addBlog: PropTypes.func.isRequired
 }
 
 export default BlogForm

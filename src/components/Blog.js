@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
-import blogService from '../services/blogs'
 
-const Blog = ({ blog, addLike, showNotification, username, deleteBlog }) => {
+const Blog = ({ blog, addLike, username, deleteBlog }) => {
   const [showAll, setShowAll] = useState(false)
 
   const changeShowAll = () => {
@@ -11,27 +10,15 @@ const Blog = ({ blog, addLike, showNotification, username, deleteBlog }) => {
 
   const buttonLabel = showAll ? 'hide' : 'view'
 
-  const handleLike = async () => {
-    try {
-      const updatedBlog = await blogService.update({ id: blog.id, likes: blog.likes + 1 })
-
-      addLike(updatedBlog)
-    } catch ({ response }) {
-      showNotification(response.data.error, true)
-    }
+  const handleLike = () => {
+    addLike(blog.id, blog.likes + 1)
   }
 
   const handleDelete = async () => {
     const confirmMsg = `remove ${blog.title} by ${blog.author}`
     if (!window.confirm(confirmMsg)) return null
 
-    try {
-      blogService.remove(blog.id)
-
-      deleteBlog(blog.id)
-    } catch ({ response }) {
-      showNotification(response.data.error, true)
-    }
+    deleteBlog(blog.id)
   }
 
   const canBeDeleted = blog.user.username === username
@@ -68,7 +55,6 @@ const Blog = ({ blog, addLike, showNotification, username, deleteBlog }) => {
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
   addLike: PropTypes.func.isRequired,
-  showNotification: PropTypes.func.isRequired,
   username: PropTypes.string,
   deleteBlog: PropTypes.func.isRequired
 }
