@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom/extend-expect'
-import { render } from '@testing-library/react'
+import { fireEvent, render } from '@testing-library/react'
 
 import Blog from './Blog'
 
@@ -38,5 +38,13 @@ describe('Rendering Blog component', () => {
     expect(urlComponent).toBeNull()
     const likesComponent = component.queryByText(`Likes: ${blogInfo.likes}`)
     expect(likesComponent).toBeNull()
+  })
+
+  test('when clicking on the view button, show url and likes', () => {
+    const viewButton = component.getByText('view')
+    fireEvent.click(viewButton)
+
+    component.getByText(blogInfo.url)
+    component.getByText(`Likes: ${blogInfo.likes}`)
   })
 })
