@@ -40,11 +40,23 @@ describe('Rendering Blog component', () => {
     expect(likesComponent).toBeNull()
   })
 
-  test('when clicking on the view button, show url and likes', () => {
-    const viewButton = component.getByText('view')
-    fireEvent.click(viewButton)
+  describe('when clicking on the view button', () => {
+    beforeEach(() => {
+      const viewButton = component.getByText('view')
+      fireEvent.click(viewButton)
+    })
 
-    component.getByText(blogInfo.url)
-    component.getByText(`Likes: ${blogInfo.likes}`)
+    test('show url and likes', () => {
+      component.getByText(blogInfo.url)
+      component.getByText(`Likes: ${blogInfo.likes}`)
+    })
+
+    test('and click on the like button, handler is called', () => {
+      const likeButton = component.getByText('like')
+      fireEvent.click(likeButton)
+      fireEvent.click(likeButton)
+
+      expect(mockLikeHandle).toHaveBeenCalledTimes(2)
+    })
   })
 })
