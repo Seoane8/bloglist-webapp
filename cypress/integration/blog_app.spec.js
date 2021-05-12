@@ -60,5 +60,19 @@ describe('Blog app', () => {
       cy.contains('Blog created succesfully')
         .should('have.css', 'color', 'rgb(0, 128, 0)')
     })
+
+    describe('And a blog exists', () => {
+      beforeEach(() => {
+        cy.createBlog(blogInfo)
+      })
+
+      it('A user can like a blog', () => {
+        cy.contains('view').click()
+        cy.contains('like').click()
+        cy.contains('Likes: 1')
+        cy.contains('like').click()
+        cy.contains('Likes: 2')
+      })
+    })
   })
 })
