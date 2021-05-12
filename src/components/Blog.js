@@ -24,7 +24,7 @@ const Blog = ({ blog, addLike, username, deleteBlog }) => {
   const canBeDeleted = blog.user.username === username
 
   return (
-    <div>
+    <div className='blog'>
       <span>{blog.title} by {blog.author}</span>
       <button onClick={changeShowAll}>{buttonLabel}</button>
       {

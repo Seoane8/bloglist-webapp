@@ -16,6 +16,12 @@ const blogInfo = {
   url: 'https://www.greatblog.com'
 }
 
+const otherBlog = {
+  title: 'A good blog',
+  author: 'Jane',
+  url: 'https://www.goodblog.com'
+}
+
 describe('Blog app', () => {
   beforeEach(() => {
     cy.resetDB()
@@ -67,9 +73,10 @@ describe('Blog app', () => {
         .should('have.css', 'color', 'rgb(0, 128, 0)')
     })
 
-    describe('And a blog exists', () => {
+    describe('And there are some blogs', () => {
       beforeEach(() => {
         cy.createBlog(blogInfo)
+        cy.createBlog(otherBlog)
       })
 
       it('A user can like a blog', () => {
@@ -97,6 +104,19 @@ describe('Blog app', () => {
         })
         cy.contains(`${blogInfo.title} by ${blogInfo.author}`)
         cy.contains('delete').should('not.exist')
+      })
+
+      it('The blogs are ordered', () => {
+        cy.get('.blog').last().as('lastBlog')
+          .contains(`${otherBlog.title} by ${otherBlog.author}`)
+
+        cy.get('@lastBlog')
+          .contains('view').click()
+
+        cy.contains('like').click().click().click()
+
+        cy.get('.blog').first()
+          .contains(`${otherBlog.title} by ${otherBlog.author}`)
       })
     })
   })
