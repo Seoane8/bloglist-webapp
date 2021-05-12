@@ -89,10 +89,17 @@ const App = () => {
     }
   }
 
+  const notificationStyle = notification.error
+    ? { color: 'red' }
+    : { color: 'green' }
+
   return (
     <div>
       {
-        notification.msg || <p>{notification.msg}</p>
+        notification.msg &&
+          <div style={notificationStyle}>
+            {notification.msg}
+          </div>
       }
       {
         user
