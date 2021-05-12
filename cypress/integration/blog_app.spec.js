@@ -4,6 +4,12 @@ const userInfo = {
   password: 'pswd'
 }
 
+const otherUser = {
+  name: 'Elisabeth',
+  username: 'Eliss',
+  password: 'pswd'
+}
+
 const blogInfo = {
   title: 'Great blog',
   author: 'Jeanette',
@@ -72,6 +78,25 @@ describe('Blog app', () => {
         cy.contains('Likes: 1')
         cy.contains('like').click()
         cy.contains('Likes: 2')
+      })
+
+      it('A user can delete a blog he owns', () => {
+        cy.contains('delete').click()
+        cy.contains('Blog removed')
+          .should('have.css', 'color', 'rgb(0, 128, 0)')
+        cy.contains(`${blogInfo.title} by ${blogInfo.author}`)
+          .should('not.exist')
+      })
+
+      it('A user cannot delete a blog that does not belong to him', () => {
+        cy.contains('logout').click()
+        cy.addUser(otherUser)
+        cy.login({
+          username: otherUser.username,
+          password: otherUser.password
+        })
+        cy.contains(`${blogInfo.title} by ${blogInfo.author}`)
+        cy.contains('delete').should('not.exist')
       })
     })
   })
