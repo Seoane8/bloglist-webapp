@@ -35,7 +35,7 @@ const App = () => {
       const newBlog = await blogService.create(blog)
 
       setBlogs(prevBlogs => [...prevBlogs, newBlog])
-      showNotification('Blog created succesfuly')
+      showNotification('Blog created succesfully')
     } catch ({ response }) {
       showNotification(response.data.error, true)
     }
